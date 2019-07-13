@@ -18,7 +18,41 @@
 (define-condition triangle-error  (error) ())
 
 (defun triangle (a b c)
-  :write-me)
+  (let ((tri :scalene) (lst (list a b c)))
+    (setf lst (sort lst #'>))
+    (if
+      (or
+        (<= a 0)
+        (<= b 0)
+        (<= c 0)
+      )
+      (setf tri (make-condition 'triangle-error))
+    )
+    (if
+      (>= (car lst) (apply '+ (cdr lst)))
+      (setf tri (make-condition 'triangle-error))
+    )
+    (if (not (typep tri 'triangle-error))
+      (progn
+        (if
+          (or
+            (eq a b)
+            (eq b c)
+            (eq a c)
+          )
+          (setf tri :isosceles)
+          nil
+        )
+        (and
+          (eq a b)
+          (eq b c)
+          (setf tri :equilateral)
+        )
+      )
+    )
+    tri
+  )
+)
 
 
 (define-test test-equilateral-triangles-have-equal-sides
