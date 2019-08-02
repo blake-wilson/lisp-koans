@@ -50,7 +50,19 @@
 ; Your goal is to write the score method.
 
 (defun score (dice)
-  ; You need to write this method
+  (let ((score 0) (dieCounts (make-hash-table)))
+    (mapcar (lambda (d) (incf (gethash d dieCounts 0))) dice)
+    (maphash (lambda (k v) (if (>= v 3) (progn
+            (if (equalp k 1)
+                (incf score 1000)
+                (incf score (* k 100))
+            )
+            (decf (gethash k dieCounts) 3)
+        ))) dieCounts)
+    (maphash (lambda (k v) (if (equalp k 1) (incf score (* v 100) )) ) dieCounts)
+    (maphash (lambda (k v) (if (equalp k 5) (incf score (* v 50) )) ) dieCounts)
+    score
+  )
 )
 
 (define-test test-score-of-an-empty-list-is-zero
