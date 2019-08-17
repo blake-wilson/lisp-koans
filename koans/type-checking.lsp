@@ -112,8 +112,7 @@
 
 
 (define-test test-guess-that-type!
-    (let ((x))
-      (setf x (make-array '(5 3 9) :element-type 'STRING))
+    (let ((x '(SIMPLE-ARRAY T (5 3 *)) ))
       (assert-true (subtypep  x '(SIMPLE-ARRAY T (* 3 *))))
       (assert-true (subtypep  x '(SIMPLE-ARRAY T (5 * *))))
       (assert-true (subtypep  x '(SIMPLE-ARRAY ARRAY *)))
